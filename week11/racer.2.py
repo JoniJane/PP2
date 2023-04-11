@@ -90,13 +90,17 @@ class Coin(pygame.sprite.Sprite):
             self.rect.center = (random.randint(40, SCREEN_WIDTH-40), 0) 
 
     def collect(self): #random generation coin
-        self.coinpng = random.choice(["Coin.png", "coin2.png"])
+        self.coinpng = random.choice(["coin.png", "coin2.png"])
         self.image = pygame.image.load("week11/files/" + self.coinpng)
         self.image = pygame.transform.scale(self.image, (40, 40))
         self.rect = self.image.get_rect()
-        self.rect.top = 0
-        self.rect.center = (random.randint(40, SCREEN_WIDTH-40), 0) 
- 
+    
+    def types(self):
+        global COIN
+        if self.coinpng == "Coin.png":
+            COIN += 5
+        else:
+            COIN += 10
 
 #Setting up Sprites        
 P1 = Player()
@@ -142,9 +146,10 @@ while True:
     
     #To be run if collision occurs between Player and Coin
     if pygame.sprite.spritecollideany(P1, coins):
-        COIN += 1
+        SPEED = COIN
         pygame.mixer.music.load("week10/allfiles/coincollect.ogg")
         pygame.mixer.music.play(start = 0.7)
+        COIN += 1
         C1.collect()
 
     #To be run if collision occurs between Player and Enemy
